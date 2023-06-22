@@ -1,27 +1,29 @@
 data.books = JSON.parse(data.books)
 data.chapters = JSON.parse(data.chapters)
 
-let state = "Books";
+let userRecord = {}
 const books = document.querySelector("#Books");
 const chapters = document.querySelector("#Chapters");
-const verses = document.querySelector("#Verses");
 
-function findVerse(bookId, chapterId){
-    for (let i = 0; i < data.chapters.length; i++){
-        const element = data.chapters[i]
-        if (element.BookID == bookId) {
-            if(element.Chapter == chapterId){
-                return i
-            }
-            
-        }
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
     }
-}
+    return "";
+  }
 
 function hideAll(){
     $("#Books").addClass("hidden");
     $("#Chapters").addClass("hidden");
-    $("#Verses").addClass("hidden");
 }
 
 //This function only runs once
@@ -55,6 +57,13 @@ function loadBooks() {
 }
 
 function loadChapters(bookId) {
+    let addNewRecord = true;
+    if(userRecord[data.books[bookId-1].BookName] != null){
+        addNewRecord = false;
+    }
+    else{
+        userRecord[data.books[bookId-1].BookName] = []
+    }
     $("#Chapters").removeClass("hidden").empty()
     const bookTitle = document.createElement("h2");
     bookTitle.innerHTML = "<a href='#'>"+data.books[bookId-1].BookName + "</a>";
@@ -63,21 +72,33 @@ function loadChapters(bookId) {
     for (let i = 1; i <= data.books[bookId-1].TotalChapters; i++){
         const chapter = document.createElement("a");
         chapter.textContent = i.toString();
-        chapter.href = ""
+        chapter.href = "#"
         chapter.classList.add("chapter")
         chapter.dataset.chapterId = i;
         chapter.dataset.bookId = bookId;
         chapter.classList.add("chapter-link");
         chapters.appendChild(chapter)
+        if (addNewRecord){
+            userRecord[data.books[bookId-1].BookName].push({
+                chapter: i,
+                isRead: false
+            })
+        }
+        else{
+            if(userRecord[data.books[bookId-1].BookName][i-1].isRead){
+                chapter.classList.add("ticked")
+            }
+        }
+        
     }
 
     $(".chapter-link").each(function () {
         $(this).on("click", function (event) {
-            event.preventDefault();
-    
             const chapterId = $(this).data("chapter-id");
-            hideAll()
-            loadVerses(bookId, chapterId)
+            userRecord[data.books[bookId-1].BookName][chapterId-1].isRead = !userRecord[data.books[bookId-1].BookName][chapterId-1].isRead;
+            $(this).toggleClass("ticked");
+            document.cookie = "record=" + JSON.stringify(userRecord)
+            console.log(document.cookie)
         });
     });
 
@@ -88,45 +109,8 @@ function loadChapters(bookId) {
 
 }
 
-function loadVerses(bookId, chapterId){
-    $("#Verses").removeClass("hidden").empty()
-    const bookChapterTitle = document.createElement("h2")
-    bookChapterTitle.innerHTML = "<a href='#'>"+data.books[bookId-1].BookName + ", Chapter " + chapterId.toString() + "</a>"
-    
-    verses.appendChild(bookChapterTitle)
-
-    const index = findVerse(bookId, chapterId);
-    const verseNo = data.chapters[index].TotalVerses;
-    for (let i = 1; i <= verseNo; i++){
-        const verse = document.createElement("a")
-        verse.textContent = i.toString();
-        verse.href = ""
-        verse.classList.add("verse")
-        verse.dataset.verseId = i;
-        verse.dataset.chapterId = chapterId;
-        verse.dataset.bookId = bookId;
-        verse.classList.add("verse-link")
-        verses.appendChild(verse);
-    }
-
-    $(".verse-link").each(function () {
-        $(this).on("click", function (event) {
-
-            
-            const chapterId = $(this).data("verse-id");
-        });
-    });
-
-    $("#Verses h2").on("click", function (event){
 
 
-        hideAll();
-        loadChapters(bookId);
-        console.log("Testing")
-    })
-}
-
-
-
+userRecord = JSON.parse(getCookie("record"))
 loadBooks();
 
