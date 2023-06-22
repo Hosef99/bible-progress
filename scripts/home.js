@@ -109,6 +109,6 @@ function loadChapters(bookId) {
 }
 
 
-if (document.cookie != "") userRecord = JSON.parse(document.cookie);
+if (document.cookie != "") userRecord = JSON.parse(getCookie(document.cookie));
 loadBooks();
 
