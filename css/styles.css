@@ -1,5 +1,5 @@
 body {
-	margin: 0 4em 10% 4em;
+	padding: 0 4em 10% 4em;
 	text-align: center;
 }
 
@@ -58,4 +58,11 @@ hr {
 
 .progress {
     margin-bottom: 1.2em;
+}
+
+footer {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 1px;
 }

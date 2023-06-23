@@ -168,7 +168,7 @@ function loadChapters(bookId) {
             $(this).toggleClass("ticked");
             $("#chapter-progress").attr("value", getReadChapters(bookId));
             console.log(JSON.stringify(userRecord))
-            document.cookie = "record=" + JSON.stringify(userRecord)
+            document.cookie = "newRecord=" + JSON.stringify(userRecord)
             
             console.log(document.cookie)
         });
@@ -181,6 +181,6 @@ function loadChapters(bookId) {
 }
 
 
-if (document.cookie != "") userRecord = JSON.parse(getCookie("record"));
+if (document.cookie != "") userRecord = JSON.parse(getCookie("newRecord"));
 loadBooks();
 
