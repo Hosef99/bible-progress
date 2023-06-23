@@ -180,7 +180,11 @@ function loadChapters(bookId) {
     })
 }
 
+try{
+    userRecord = JSON.parse(getCookie("newRecord"));
+}
+catch{
 
-if (document.cookie != "") userRecord = JSON.parse(getCookie("newRecord"));
+}
 loadBooks();
 
