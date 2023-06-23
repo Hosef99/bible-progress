@@ -30,6 +30,9 @@ hr {
 	text-decoration: none;
 	background-color: #00375e;
 }
+#Books a.ticked {
+    background-color: #5e0000;
+}
 
 #Chapters h2 a{
     color: inherit;
@@ -51,4 +54,8 @@ hr {
 
 .chapter.ticked {
     background-color: #5e0000;
+}
+
+.progress {
+    margin-bottom: 1.2em;
 }
