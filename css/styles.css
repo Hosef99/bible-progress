@@ -43,12 +43,6 @@ hr {
     background-color: #5e0000;
 }
 
-.link-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
 #view-toggle {
     display: inline-block;
 	padding: 0.375em 0.5em;
@@ -61,10 +55,26 @@ hr {
 }
 
 .list {
-    height: 3em;
     transition: all 0.5s;
     color: black;
     text-decoration: none;
+    flex-basis: 3em;
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list-container {
+    display: flex;
+    flex-direction: column;
+    height: 20vh;
+    overflow: auto;
+}
+
+.list-container.hidden{
+    height: 0;
 }
 
 
@@ -100,12 +110,4 @@ hr {
 
 .progress {
     margin-bottom: 1.2em;
-}
-
-.footer {
-    padding-bottom: 3vmin;
-    position: absolute;
-    bottom: -15vh;
-    right: 0;
-    left: 0;
 }
