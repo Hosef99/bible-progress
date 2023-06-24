@@ -74,7 +74,7 @@ function updateAll() {
 			"You have read " +
 			total.toString() +
 			" chapters out of 1189, you're almost there!";
-	} else if (total < 1190) {
+	} else if (total < 1180) {
 		textContent =
 			"You have read " +
 			total.toString() +
