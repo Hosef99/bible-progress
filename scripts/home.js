@@ -60,6 +60,7 @@ function saveCookie() {
 
 function updateAll() {
 	// Progress Bar, paragraph, buttons
+    console.log("Update")
 	$(".main-progress progress").attr("value", getTotalRead().toString());
 	let textContent = "";
 	let total = getTotalRead();
@@ -214,7 +215,7 @@ NTContainer.appendChild(listNTContainer)
 			clusterOTContainer.appendChild(book);
 
 			// List View
-			const listItem = document.createElement("a");
+			const listItem = document.createElement("div");
 			listItem.innerHTML =
 				"<label for='chapter-list-progress'>" +
 				element.BookName +
@@ -223,11 +224,11 @@ NTContainer.appendChild(listNTContainer)
 				"' max='" +
 				data.books[i].TotalChapters +
 				"'>" +
-				"</progress>";
+				"</progress>" + "<button href='#' class='list-button'>+</button>";
 			listItem.classList.add("list");
+            listItem.classList.add((i+1).toString())
 			listItem.classList.add("hidden");
 			listItem.dataset.bookId = i;
-			listItem.href = "javascript:void(0)";
 			listOTContainer.appendChild(listItem);
 		} else {
 			let currReadChapter = 0;
@@ -250,7 +251,7 @@ NTContainer.appendChild(listNTContainer)
 			clusterNTContainer.appendChild(book);
 
 			// List View
-			const listItem = document.createElement("a");
+			const listItem = document.createElement("div");
 			listItem.innerHTML =
 				"<label for='chapter-list-progress'>" +
 				element.BookName +
@@ -259,11 +260,12 @@ NTContainer.appendChild(listNTContainer)
 				"' max='" +
 				data.books[i].TotalChapters +
 				"'>" +
-				"</progress>";
+				"</progress>" + "<button href='#' class='list-button'>+</button>";
 			listItem.classList.add("list");
 			listItem.classList.add("hidden");
-			listItem.dataset.bookId = i;
-			listItem.href = "javascript:void(0)";
+			listItem.classList.add((i+1).toString())
+            listItem.dataset.bookId = i;
+
 			listNTContainer.appendChild(listItem);
 		}
 	}
@@ -285,12 +287,13 @@ NTContainer.appendChild(listNTContainer)
 	});
 
 	// List item that triggers on click
-	$(".list").on("click", function () {
-		const bookId = $(this).data("book-id");
+	$(".list-button").on("click", function () {
+        let list = $(this).parent()
+        const bookId = $(list).data("book-id");
 		let maxValue = data.books[bookId].TotalChapters;
 		readValue = listPress(getReadChapters(bookId), maxValue);
-		$(this).children("progress").attr("value", readValue);
-		$(this).children("progress").attr("max", maxValue);
+		$(list).children("progress").attr("value", readValue);
+		$(list).children("progress").attr("max", maxValue);
 		let bookLength = data.books[bookId].TotalChapters;
 		if (readValue === 0) {
 			userRecord[bookId] = "0".repeat(bookLength);

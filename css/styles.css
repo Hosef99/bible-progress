@@ -111,3 +111,9 @@ hr {
 .progress {
     margin-bottom: 1.2em;
 }
+
+button {
+    margin-left: 3%;
+    display: inline-flex;
+    align-items: center;
+}
